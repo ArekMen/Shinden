@@ -1,75 +1,103 @@
-/* === HERO: zero przycinania, skalowanie do obrazu === */
-/* Proporcja Twojego banera (2048x745 ≈ 2.75:1) */
-:root { --hero-ratio: 2048 / 745; }
+/* (opcjonalnie) czcionka */
+/* @import url('https://fonts.googleapis.com/css2?family=Autour+One&display=swap'); */
 
-/* Najwyższa specyficzność + !important, żeby przebić wszystko */
-html body .hero-image-container{
-  /* rozmiar kontenera z proporcji (działa w nowoczesnych przeglądarkach) */
-  aspect-ratio: var(--hero-ratio) !important;
-
-  /* fallback na wypadek problemów z aspect-ratio */
-  height: auto !important;
-  min-height: 0 !important;
-  /* jeśli coś wcześniej ustawiało stałe px – skasuj to paddingiem na 36.4% szerokości */
-  padding-top: 36.4% !important;
-  /* i zaraz potem zerujemy, jeśli aspect-ratio zadziała – dzięki czemu nie robi się podwójna wysokość */
-  padding-top: 0 !important;
-
-  /* tło bez przycinania */
-  background-size: contain !important;
-  background-repeat: no-repeat !important;
-  background-position: center center !important;
-  box-shadow: none !important;
+/* ========== TŁO STRONY ========== */
+body{
+  font-family: Autour One, system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif !important;
+  background: url("https://cdn.jsdelivr.net/gh/ArekMen/Shinden@main/ahegaowall.jpg") 25% 0 / cover no-repeat fixed !important;
+  background-color: #000 !important; /* fallback, gdyby obraz się nie załadował */
 }
 
-/* Jeśli czasem .hero-image-container nie istnieje – fallback baner przed treścią */
-html body .view-content-wrapper:not(:has(.hero-image-container))::before{
-  content: "";
-  display: block;
+/* ========== PANEL BOCZNY I KONTENT ========== */
+*[border]{ border-color: white !important; }
+
+.sidebar-group:not(.sidebar-input) {
+  background-color: rgba(0, 0, 0, 0.5) !important;
+  padding: 5px;
+  border-left: 1px solid white !important;
+  border-right: 1px solid white !important;
+}
+.sidebar-group:not(.sidebar-input):nth-of-type(1){
+  border-top: 1px solid white !important;
+  border-radius: 20px 20px 0 0 !important;
+}
+.sidebar-group:not(.sidebar-input):last-of-type{
+  border-bottom: 1px solid white !important;
+  border-radius: 0 0 20px 20px !important;
+}
+.custom-slider-wrapper{ width: calc(100% - 20px) !important; }
+
+.view-content-wrapper {
+  border-color: white !important;
+  background-color: rgba(0, 0, 0, 0.5) !important;
+  position: relative !important;
+}
+.columns-wrapper{ padding-top: 0 !important; }
+
+.sidebarList-header::before, .MuiAccordionSummary-content::before{ background-color: #FABF27 !important; }
+.MuiSlider-thumb{ background-color: white !important; }
+.navigation-wrapper{ position: relative !important; }
+.custom-dropdown .custom-dropdown-control:hover svg { color: #FABF27 !important; }
+.input-wrapper, .sidebar-list-item > a.is-active, .custom-dropdown-control, .table-header-label, .listRowDesktop-wrapper{
+  background-color: rgb(0 0 0 / 50%) !important;
+}
+.custom-dropdown > [class$="-menu"]{ background-color: rgb(0 0 0 / 90%) !important; }
+input{ color: white !important; }
+.footer-text::after{
+  content: " Wygląd stworzył Socrates" !important;
+  font-size: small !important;
+}
+
+/* Kafelki/wiersze */
+.rowTitleInfo-inner{
+  background: url("https://cdn.jsdelivr.net/gh/ArekMen/Shinden@main/ahegaowall.jpg") 25% 0 / cover no-repeat fixed !important;
+  border: 1px solid white !important;
+  border-radius: 20px !important;
+  padding: 10px !important;
+}
+
+/* ========== HERO (JEDEN baner, bez przycinania) ========== */
+/* Proporcja Twoich banerów: 2048x745 (≈ 2.75:1) */
+:root{ --hero-w: 2048; --hero-h: 745; }
+
+.hero-image-container{
   width: 100% !important;
-  aspect-ratio: var(--hero-ratio) !important;
+  aspect-ratio: var(--hero-w) / var(--hero-h) !important; /* wysokość z proporcji */
   background-position: center center !important;
   background-repeat: no-repeat !important;
-  background-size: contain !important;
-  margin-bottom: 8px;
+  background-size: contain !important; /* pokaż CAŁY obraz, nic nie ucinaj */
+  background-color: transparent !important;
+  box-shadow: none !important;
+  position: relative !important;
 }
 
-/* Wymuszenie obrazów dla wszystkich zakładek (bez przycinania) */
-html:has(.sidebar-list-item > a.is-active[href*="/in-progress"])  .hero-image-container,
-body.in-progress .hero-image-container{
-  background-image: url("https://cdn.jsdelivr.net/gh/ArekMen/Shinden@main/Ogladam.png") !important;
-}
-html:has(.sidebar-list-item > a.is-active[href*="/completed"])    .hero-image-container,
-body.completed .hero-image-container{
-  background-image: url("https://cdn.jsdelivr.net/gh/ArekMen/Shinden@main/Obejrzane.png") !important;
-}
-html:has(.sidebar-list-item > a.is-active[href*="/skip"])         .hero-image-container,
-body.skip .hero-image-container{
-  background-image: url("https://cdn.jsdelivr.net/gh/ArekMen/Shinden@main/Pomijam.png") !important;
-}
-html:has(.sidebar-list-item > a.is-active[href*="/hold"])         .hero-image-container,
-body.hold .hero-image-container{
-  background-image: url("https://cdn.jsdelivr.net/gh/ArekMen/Shinden@main/Wstrzymane.png") !important;
-}
-html:has(.sidebar-list-item > a.is-active[href*="/dropped"])      .hero-image-container,
-body.dropped .hero-image-container{
-  background-image: url("https://cdn.jsdelivr.net/gh/ArekMen/Shinden@main/Porzucone.png") !important;
-}
-html:has(.sidebar-list-item > a.is-active[href*="/plan"])         .hero-image-container,
-body.plan .hero-image-container{
-  background-image: url("https://cdn.jsdelivr.net/gh/ArekMen/Shinden@main/Planuje.png") !important;
-}
-html:has(.sidebar-list-item > a.is-active[href*="/all"])          .hero-image-container,
-body.all .hero-image-container,
-.hero-image-container{ /* domyślny fallback */
-  background-image: url("https://cdn.jsdelivr.net/gh/ArekMen/Shinden@main/Wszystkie.png") !important;
+/* opcjonalny, delikatny gradient u góry (czytelność) */
+.hero-image-container::after{
+  content: "";
+  position: absolute; inset: 0;
+  background: linear-gradient(to bottom, rgba(0,0,0,.35), rgba(0,0,0,0) 40%);
+  pointer-events: none;
 }
 
-/* Fallback-obrazy dla wariantu ::before (gdy brak .hero-image-container) */
-html:has(.sidebar-list-item > a.is-active[href*="/in-progress"])  .view-content-wrapper:not(:has(.hero-image-container))::before{ background-image: url("https://cdn.jsdelivr.net/gh/ArekMen/Shinden@main/Ogladam.png") !important; }
-html:has(.sidebar-list-item > a.is-active[href*="/completed"])    .view-content-wrapper:not(:has(.hero-image-container))::before{ background-image: url("https://cdn.jsdelivr.net/gh/ArekMen/Shinden@main/Obejrzane.png") !important; }
-html:has(.sidebar-list-item > a.is-active[href*="/skip"])         .view-content-wrapper:not(:has(.hero-image-container))::before{ background-image: url("https://cdn.jsdelivr.net/gh/ArekMen/Shinden@main/Pomijam.png") !important; }
-html:has(.sidebar-list-item > a.is-active[href*="/hold"])         .view-content-wrapper:not(:has(.hero-image-container))::before{ background-image: url("https://cdn.jsdelivr.net/gh/ArekMen/Shinden@main/Wstrzymane.png") !important; }
-html:has(.sidebar-list-item > a.is-active[href*="/dropped"])      .view-content-wrapper:not(:has(.hero-image-container))::before{ background-image: url("https://cdn.jsdelivr.net/gh/ArekMen/Shinden@main/Porzucone.png") !important; }
-html:has(.sidebar-list-item > a.is-active[href*="/plan"])         .view-content-wrapper:not(:has(.hero-image-container))::before{ background-image: url("https://cdn.jsdelivr.net/gh/ArekMen/Shinden@main/Planuje.png") !important; }
-html:has(.sidebar-list-item > a.is-active[href*="/all"])          .view-content-wrapper:not(:has(.hero-image-container))::before{ background-image: url("https://cdn.jsdelivr.net/gh/ArekMen/Shinden@main/Wszystkie.png") !important; }
+/* Obrazy dla zakładek – tylko tu podmieniasz linki jeśli chcesz */
+body.in-progress .hero-image-container{ background-image: url("https://cdn.jsdelivr.net/gh/ArekMen/Shinden@main/Ogladam.png") !important; }
+body.completed   .hero-image-container{ background-image: url("https://cdn.jsdelivr.net/gh/ArekMen/Shinden@main/Obejrzane.png") !important; }
+body.skip        .hero-image-container{ background-image: url("https://cdn.jsdelivr.net/gh/ArekMen/Shinden@main/Pomijam.png") !important; }
+body.hold        .hero-image-container{ background-image: url("https://cdn.jsdelivr.net/gh/ArekMen/Shinden@main/Wstrzymane.png") !important; }
+body.dropped     .hero-image-container{ background-image: url("https://cdn.jsdelivr.net/gh/ArekMen/Shinden@main/Porzucone.png") !important; }
+body.plan        .hero-image-container{ background-image: url("https://cdn.jsdelivr.net/gh/ArekMen/Shinden@main/Planuje.png") !important; }
+body.all         .hero-image-container{ background-image: url("https://cdn.jsdelivr.net/gh/ArekMen/Shinden@main/Wszystkie.png") !important; }
+
+/* „Pancernie” – gdyby Shinden nie dawał klas na <body>, wykryj aktywną zakładkę w sidebarze */
+html:has(.sidebar-list-item > a.is-active[href*="/in-progress"])  .hero-image-container{ background-image: url("https://cdn.jsdelivr.net/gh/ArekMen/Shinden@main/Ogladam.png") !important; }
+html:has(.sidebar-list-item > a.is-active[href*="/completed"])    .hero-image-container{ background-image: url("https://cdn.jsdelivr.net/gh/ArekMen/Shinden@main/Obejrzane.png") !important; }
+html:has(.sidebar-list-item > a.is-active[href*="/skip"])         .hero-image-container{ background-image: url("https://cdn.jsdelivr.net/gh/ArekMen/Shinden@main/Pomijam.png") !important; }
+html:has(.sidebar-list-item > a.is-active[href*="/hold"])         .hero-image-container{ background-image: url("https://cdn.jsdelivr.net/gh/ArekMen/Shinden@main/Wstrzymane.png") !important; }
+html:has(.sidebar-list-item > a.is-active[href*="/dropped"])      .hero-image-container{ background-image: url("https://cdn.jsdelivr.net/gh/ArekMen/Shinden@main/Porzucone.png") !important; }
+html:has(.sidebar-list-item > a.is-active[href*="/plan"])         .hero-image-container{ background-image: url("https://cdn.jsdelivr.net/gh/ArekMen/Shinden@main/Planuje.png") !important; }
+html:has(.sidebar-list-item > a.is-active[href*="/all"])          .hero-image-container{ background-image: url("https://cdn.jsdelivr.net/gh/ArekMen/Shinden@main/Wszystkie.png") !important; }
+
+/* ========== MOBILE: płynność przewijania ========== */
+@media (max-width: 768px){
+  body, .rowTitleInfo-inner{ background-attachment: scroll !important; }
+}
