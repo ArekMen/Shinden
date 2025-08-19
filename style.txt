@@ -1,0 +1,75 @@
+/* === HERO: zero przycinania, skalowanie do obrazu === */
+/* Proporcja Twojego banera (2048x745 ≈ 2.75:1) */
+:root { --hero-ratio: 2048 / 745; }
+
+/* Najwyższa specyficzność + !important, żeby przebić wszystko */
+html body .hero-image-container{
+  /* rozmiar kontenera z proporcji (działa w nowoczesnych przeglądarkach) */
+  aspect-ratio: var(--hero-ratio) !important;
+
+  /* fallback na wypadek problemów z aspect-ratio */
+  height: auto !important;
+  min-height: 0 !important;
+  /* jeśli coś wcześniej ustawiało stałe px – skasuj to paddingiem na 36.4% szerokości */
+  padding-top: 36.4% !important;
+  /* i zaraz potem zerujemy, jeśli aspect-ratio zadziała – dzięki czemu nie robi się podwójna wysokość */
+  padding-top: 0 !important;
+
+  /* tło bez przycinania */
+  background-size: contain !important;
+  background-repeat: no-repeat !important;
+  background-position: center center !important;
+  box-shadow: none !important;
+}
+
+/* Jeśli czasem .hero-image-container nie istnieje – fallback baner przed treścią */
+html body .view-content-wrapper:not(:has(.hero-image-container))::before{
+  content: "";
+  display: block;
+  width: 100% !important;
+  aspect-ratio: var(--hero-ratio) !important;
+  background-position: center center !important;
+  background-repeat: no-repeat !important;
+  background-size: contain !important;
+  margin-bottom: 8px;
+}
+
+/* Wymuszenie obrazów dla wszystkich zakładek (bez przycinania) */
+html:has(.sidebar-list-item > a.is-active[href*="/in-progress"])  .hero-image-container,
+body.in-progress .hero-image-container{
+  background-image: url("https://cdn.jsdelivr.net/gh/ArekMen/Shinden@main/Ogladam.png") !important;
+}
+html:has(.sidebar-list-item > a.is-active[href*="/completed"])    .hero-image-container,
+body.completed .hero-image-container{
+  background-image: url("https://cdn.jsdelivr.net/gh/ArekMen/Shinden@main/Obejrzane.png") !important;
+}
+html:has(.sidebar-list-item > a.is-active[href*="/skip"])         .hero-image-container,
+body.skip .hero-image-container{
+  background-image: url("https://cdn.jsdelivr.net/gh/ArekMen/Shinden@main/Pomijam.png") !important;
+}
+html:has(.sidebar-list-item > a.is-active[href*="/hold"])         .hero-image-container,
+body.hold .hero-image-container{
+  background-image: url("https://cdn.jsdelivr.net/gh/ArekMen/Shinden@main/Wstrzymane.png") !important;
+}
+html:has(.sidebar-list-item > a.is-active[href*="/dropped"])      .hero-image-container,
+body.dropped .hero-image-container{
+  background-image: url("https://cdn.jsdelivr.net/gh/ArekMen/Shinden@main/Porzucone.png") !important;
+}
+html:has(.sidebar-list-item > a.is-active[href*="/plan"])         .hero-image-container,
+body.plan .hero-image-container{
+  background-image: url("https://cdn.jsdelivr.net/gh/ArekMen/Shinden@main/Planuje.png") !important;
+}
+html:has(.sidebar-list-item > a.is-active[href*="/all"])          .hero-image-container,
+body.all .hero-image-container,
+.hero-image-container{ /* domyślny fallback */
+  background-image: url("https://cdn.jsdelivr.net/gh/ArekMen/Shinden@main/Wszystkie.png") !important;
+}
+
+/* Fallback-obrazy dla wariantu ::before (gdy brak .hero-image-container) */
+html:has(.sidebar-list-item > a.is-active[href*="/in-progress"])  .view-content-wrapper:not(:has(.hero-image-container))::before{ background-image: url("https://cdn.jsdelivr.net/gh/ArekMen/Shinden@main/Ogladam.png") !important; }
+html:has(.sidebar-list-item > a.is-active[href*="/completed"])    .view-content-wrapper:not(:has(.hero-image-container))::before{ background-image: url("https://cdn.jsdelivr.net/gh/ArekMen/Shinden@main/Obejrzane.png") !important; }
+html:has(.sidebar-list-item > a.is-active[href*="/skip"])         .view-content-wrapper:not(:has(.hero-image-container))::before{ background-image: url("https://cdn.jsdelivr.net/gh/ArekMen/Shinden@main/Pomijam.png") !important; }
+html:has(.sidebar-list-item > a.is-active[href*="/hold"])         .view-content-wrapper:not(:has(.hero-image-container))::before{ background-image: url("https://cdn.jsdelivr.net/gh/ArekMen/Shinden@main/Wstrzymane.png") !important; }
+html:has(.sidebar-list-item > a.is-active[href*="/dropped"])      .view-content-wrapper:not(:has(.hero-image-container))::before{ background-image: url("https://cdn.jsdelivr.net/gh/ArekMen/Shinden@main/Porzucone.png") !important; }
+html:has(.sidebar-list-item > a.is-active[href*="/plan"])         .view-content-wrapper:not(:has(.hero-image-container))::before{ background-image: url("https://cdn.jsdelivr.net/gh/ArekMen/Shinden@main/Planuje.png") !important; }
+html:has(.sidebar-list-item > a.is-active[href*="/all"])          .view-content-wrapper:not(:has(.hero-image-container))::before{ background-image: url("https://cdn.jsdelivr.net/gh/ArekMen/Shinden@main/Wszystkie.png") !important; }
